@@ -1,5 +1,5 @@
-Dark Gods - anti-virus testing and malware research tools
+Dark Gods
 
 Contents of this repository are strictly for legal and authorized use, and come with absolutely no warranty.
 
-FOR THE DARK GODS! 
+"The day will not save them. And we own the night." ---Horus 
