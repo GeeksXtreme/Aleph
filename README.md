@@ -1,4 +1,4 @@
-Project ALEPH - a wicked Windows rootkit
+Project ALEPH 
 ==
 ALEPH is a Windows rootkit designed to be configurable, powerful, and very hard to detect. The purpose of this project is merely for fun and learning, but also possibly to design a novel security testing tool.
 
