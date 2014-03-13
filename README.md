@@ -1,7 +1,7 @@
 Project ALEPH 
 ==
 
-Please check the issues page to see our current tasks and progress. 
+Please check the issues page to see our current tasks and progress. For a description of our branching model, please see [this document](http://nvie.com/posts/a-successful-git-branching-model/).
 
 Purpose
 ---
