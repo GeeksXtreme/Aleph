@@ -1,5 +1,6 @@
 Project ALEPH 
 ==
+ALEPH is a Windows rootkit designed to be configurable based on the user's needs, incredibly powerful once installed on a target host, and very hard to detect. The purpose of this project is mainly for fun and learning, but also to design a novel security testing tool.
 
 Please check the issues page to see our current tasks and progress. For a description of our branching model, please see [this document](http://nvie.com/posts/a-successful-git-branching-model/).
 
@@ -9,7 +10,6 @@ During a [penetration test](http://en.wikipedia.org/wiki/Penetration_test), a co
 
 However, it is very easy for a smart system administrator to detect that a shell is open locally, and an intrusion detection/prevention system can be configured to block network traffic that looks like it belongs to a [reverse shell](http://en.wikipedia.org/wiki/Shellcode#Remote). One strategy for maintaining persistent covert remote access is by employing a [rootkit](http://en.wikipedia.org/wiki/Rootkit). 
 
-ALEPH is a Windows rootkit designed to be configurable based on the user's needs, incredibly powerful once installed on a target host, and very hard to detect. The purpose of this project is mainly for fun and learning, but also to design a novel security testing tool.
 
 ALEPH is released under GNU GPL (see license.txt) and is specifically for legitimate use for penetration testers, malware analysts, and other security professionals. ALEPH is not a hacking tool and not intended for malicious use. 
 
