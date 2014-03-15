@@ -5,14 +5,73 @@
 #include<arpa/inet.h> //inet_addr
 #include<unistd.h>    //write
 
+int create_listener();
+char *parse_request(char*, char[]);
+void handle_connection(char*, int);
+
 int main(int argc, char *argv[])
 {
-  char json_body[4000];
-  int socket_desc, new_socket, c, read_size;
-  int yes = 1;
-  char* message, client_message[4000];
-  struct sockaddr_in server, client;
+  int socket;
+  char* message;
 
+  socket = create_listener();
+  if (socket < 0)
+  {
+    exit(1);
+  }
+
+  // Reply to the client
+  message = "This was a triumph!\n";
+  handle_connection(message, socket);
+
+  return 0;
+}
+
+void handle_connection(char* connect_message, int socket)
+{
+  char* json_body;
+  char client_message[4000];
+  int read_size;
+
+  write(socket, connect_message, strlen(connect_message));
+
+  while( (read_size = recv(socket, client_message, 4000, 0)) > 0 )
+  {
+    printf("read_size: %i \n", read_size);
+    /* close(new_socket); */
+    char body[read_size];
+    json_body = parse_request(client_message, body);
+    printf("the json paylod: %s", json_body);
+    close(socket);
+  }
+  fflush(stdout);
+}
+
+char *parse_request(char* client_message, char json_body[])
+{
+  int message_len = strlen(client_message);
+  int found_body = 0;
+  int json_body_idx = 0;
+  for(int i = 0; i < message_len; i++)
+  {
+    if(!found_body) {
+      if(client_message[i] == '\r' && client_message[i+1] == '\n' && client_message[i+2] == '\r' && client_message[i+3] == '\n'){
+        i += 3;
+        found_body = 1;
+      }
+    } else {
+      json_body[json_body_idx] = client_message[i];
+      json_body_idx++;
+    }
+  }
+  return json_body;
+}
+
+int create_listener()
+{
+  struct sockaddr_in server, client;
+  int new_socket, c, socket_desc;
+  int yes = 1;
   // Create socket
   socket_desc = socket(AF_INET, SOCK_STREAM, 0);
   if (socket_desc == -1)
@@ -36,9 +95,11 @@ int main(int argc, char *argv[])
   if( bind(socket_desc, (struct sockaddr *)&server, sizeof(server)) < 0 )
   {
     puts("bind failed");
-    return 1;
+    fflush(stdout);
+    return -1;
   }
   puts("bind done");
+  fflush(stdout);
 
   // Listen
   listen(socket_desc, 3);
@@ -53,31 +114,5 @@ int main(int argc, char *argv[])
   }
   puts("connection accepted");
 
-  // Reply to the client
-  message = "This was a triumph!\n";
-  write(new_socket, message, strlen(message));
-
-  while( (read_size = recv(new_socket, client_message, 4000, 0)) > 0 )
-  {
-    /* close(new_socket); */
-    int message_len = strlen(client_message);
-    int found_body = 0;
-    int json_body_idx = 0;
-    for(int i = 0; i < message_len; i++)
-    {
-      if(!found_body) {
-        if(client_message[i] == '\r' && client_message[i+1] == '\n' && client_message[i+2] == '\r' && client_message[i+3] == '\n'){
-          i += 3;
-          found_body = 1;
-        }
-      } else {
-        json_body[json_body_idx] = client_message[i];
-        json_body_idx++;
-      }
-    }
-    printf("the json paylod: %s", json_body);
-    close(new_socket);
-  }
-
-  return 0;
+  return new_socket;
 }
